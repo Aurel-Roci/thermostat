@@ -3,7 +3,7 @@ import adafruit_bme680
 import time
 import logging
 from typing import Optional, Dict
-from air_quality import AirQualityAnalyzer
+from .air_quality import AirQualityAnalyzer
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +15,7 @@ class BME680Sensor:
         self.db = db
         self.device_id = device_id
         self.sensor = None
+        self.air_quality = AirQualityAnalyzer()
         self._initialize_sensor()
 
     def _initialize_sensor(self):
@@ -50,13 +51,19 @@ class BME680Sensor:
             pressure = self.sensor.pressure
             gas = self.sensor.gas
 
-            # Round values for cleaner data
+            air_analysis = self.air_quality.add_reading(gas)
+
             readings = {
                 'temperature': round(temperature, 2),
                 'humidity': round(humidity, 2),
                 'pressure': round(pressure, 2),
-                'gas_resistance': round(gas, 0)
+                'gas_resistance': round(gas, 0),
+                'air_quality_score': air_analysis.get('air_quality_score'),
+                'air_quality_percentage': air_analysis.get('air_quality_percentage')
             }
+
+            readings['_air_quality_status'] = air_analysis.get('air_quality_status', 'Unknown')
+            readings['_air_quality_description'] = air_analysis.get('description', '')
 
             logger.debug(f"BME680 readings: {readings}")
             return readings
@@ -79,19 +86,21 @@ class BME680Sensor:
                 readings = self.read_sensor()
 
                 if readings:
-                    # Send to database using new format
+                    db_readings = {k: v for k, v in readings.items() if not k.startswith('_')}
                     success = self.db.write_sensor_data(
                         device_id=self.device_id,
                         sensor_type="bme680",
-                        **readings
+                        **db_readings
                     )
 
                     if success:
+                        status = readings.get('_air_quality_status', 'Unknown')
+                        description = readings.get('_air_quality_description', '')
                         logger.info(
                             f"📊 T={readings['temperature']}°C, "
                             f"H={readings['humidity']}%, "
                             f"P={readings['pressure']}hPa, "
-                            f"Gas={readings['gas_resistance']}"
+                            f"AQ={status} ({readings.get('air_quality_score', 'N/A')}/100) - {description}"
                         )
 
                 time.sleep(interval)
