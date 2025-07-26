@@ -1,0 +1,23 @@
+[Unit]
+Description=BME680 VictoriaMetrics Pipeline
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10
+User=thermostat
+Group=thermostat
+WorkingDirectory=/home/aurel/thermostat
+Environment=PATH=/home/aurel/thermostat/thermostat_venv/bin
+Environment=PYTHONPATH=/home/aurel/thermostat
+EnvironmentFile=/etc/thermostat/thermostat.conf
+ExecStart=/home/aurel/thermostat/thermostat_venv/bin/python bme680_pipeline.py
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=bme680-pipeline
+
+[Install]
+WantedBy=multi-user.target

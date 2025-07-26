@@ -1,0 +1,22 @@
+# Core Flask Framework
+Flask==3.0.0
+Werkzeug==3.0.1
+Jinja2==3.1.2
+
+# Database Client
+influxdb-client==1.38.0
+python-dateutil==2.8.2
+
+# GPIO for Pi 2B (older, stable)
+RPi.GPIO==0.7.1  # Works fine on Pi 2B
+
+# DHT22 Sensor
+adafruit-circuitpython-dht==3.7.8
+Adafruit-Blinka>=8.0.0  # Older version for Pi 2B compatibility
+adafruit-circuitpython-busdevice>=5.0.0
+
+# Environment & Config
+python-dotenv==1.0.0
+
+# Networking
+requests==2.31.0
