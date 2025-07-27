@@ -901,7 +901,62 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Baseline (Ω)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ohm"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "mappings",
+                "value": []
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Std Dev (Ω)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ohm"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "mappings",
+                "value": []
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "purple"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 6,
@@ -928,7 +983,8 @@
             "type": "victoriametrics-metrics-datasource",
             "uid": "$DS_VICTORIAMETRICS"
           },
-          "expr": "baseline_value{device=\"pi4_bme680\"} > 0",
+          "expr": "100 * clamp_max(baseline_value{device=\"pi4_bme680\"} > 0, 1)",
+          "instant": true,
           "interval": "",
           "legendFormat": "Calibration Status",
           "refId": "A"
@@ -939,6 +995,7 @@
             "uid": "$DS_VICTORIAMETRICS"
           },
           "expr": "baseline_value{device=\"pi4_bme680\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Baseline (Ω)",
           "refId": "B"
@@ -949,12 +1006,21 @@
             "uid": "$DS_VICTORIAMETRICS"
           },
           "expr": "baseline_std{device=\"pi4_bme680\"}",
+          "instant": true,
           "interval": "",
           "legendFormat": "Std Dev (Ω)",
           "refId": "C"
         }
       ],
       "title": "🎯 Calibration Status",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": ["lastNotNull"]
+          }
+        }
+      ],
       "type": "table"
     },
     {
