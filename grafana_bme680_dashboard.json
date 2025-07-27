@@ -63,7 +63,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 6,
         "x": 0,
         "y": 0
@@ -148,7 +148,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 6,
         "x": 6,
         "y": 0
@@ -225,7 +225,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 6,
         "x": 12,
         "y": 0
@@ -257,7 +257,7 @@
           "refId": "A"
         }
       ],
-      "title": "⏲️ Atmospheric Pressure",
+      "title": "⏲️ Pressure",
       "type": "gauge"
     },
     {
@@ -273,7 +273,7 @@
           "mappings": [
             {
               "options": {
-                "from": 85,
+                "from": 80,
                 "result": {
                   "color": "dark-green",
                   "index": 0,
@@ -285,37 +285,37 @@
             },
             {
               "options": {
-                "from": 70,
+                "from": 65,
                 "result": {
                   "color": "green",
                   "index": 1,
                   "text": "Good"
                 },
-                "to": 84
+                "to": 79
               },
               "type": "range"
             },
             {
               "options": {
-                "from": 50,
+                "from": 45,
                 "result": {
                   "color": "yellow",
                   "index": 2,
-                  "text": "Fair"
+                  "text": "Moderate"
                 },
-                "to": 69
+                "to": 64
               },
               "type": "range"
             },
             {
               "options": {
-                "from": 30,
+                "from": 25,
                 "result": {
                   "color": "orange",
                   "index": 3,
                   "text": "Poor"
                 },
-                "to": 49
+                "to": 44
               },
               "type": "range"
             },
@@ -325,9 +325,9 @@
                 "result": {
                   "color": "red",
                   "index": 4,
-                  "text": "Bad"
+                  "text": "Very Poor"
                 },
-                "to": 29
+                "to": 24
               },
               "type": "range"
             }
@@ -342,19 +342,19 @@
               },
               {
                 "color": "orange",
-                "value": 30
+                "value": 25
               },
               {
                 "color": "yellow",
-                "value": 50
+                "value": 45
               },
               {
                 "color": "green",
-                "value": 70
+                "value": 65
               },
               {
                 "color": "dark-green",
-                "value": 85
+                "value": 80
               }
             ]
           },
@@ -363,7 +363,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 6,
         "x": 18,
         "y": 0
@@ -509,7 +509,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 7
       },
       "id": 5,
       "options": {
@@ -632,7 +632,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 16
       },
       "id": 6,
       "options": {
@@ -717,15 +717,19 @@
               },
               {
                 "color": "red",
-                "value": 50
+                "value": 25
+              },
+              {
+                "color": "orange",
+                "value": 45
               },
               {
                 "color": "yellow",
-                "value": 70
+                "value": 65
               },
               {
                 "color": "green",
-                "value": 85
+                "value": 80
               }
             ]
           }
@@ -787,7 +791,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 16
       },
       "id": 7,
       "options": {
@@ -828,19 +832,295 @@
       ],
       "title": "🌿 Air Quality Analysis",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "$DS_VICTORIAMETRICS"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "🔧 Calibrating"
+                },
+                "to": 99
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "100": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "✅ Complete"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "null": {
+                  "color": "orange",
+                  "index": 2,
+                  "text": "⏳ Starting"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange"
+              },
+              {
+                "color": "red",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 9,
+        "x": 0,
+        "y": 25
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "baseline_value{device=\"pi4_bme680\"} > 0",
+          "interval": "",
+          "legendFormat": "Calibration Status",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "baseline_value{device=\"pi4_bme680\"}",
+          "interval": "",
+          "legendFormat": "Baseline (Ω)",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "baseline_std{device=\"pi4_bme680\"}",
+          "interval": "",
+          "legendFormat": "Std Dev (Ω)",
+          "refId": "C"
+        }
+      ],
+      "title": "🎯 Calibration Status",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "$DS_VICTORIAMETRICS"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ohm"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gas Resistance"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Baseline"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [10, 10],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": ["lastNotNull", "min", "max", "mean"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "gas_resistance{device=\"pi4_bme680\"}",
+          "interval": "",
+          "legendFormat": "Gas Resistance",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "baseline_value{device=\"pi4_bme680\"}",
+          "interval": "",
+          "legendFormat": "Baseline",
+          "refId": "B"
+        }
+      ],
+      "title": "🔬 Gas Resistance vs Baseline",
+      "type": "timeseries"
     }
   ],
   "preload": false,
   "refresh": "30s",
   "schemaVersion": 41,
-  "tags": ["bme680", "environment", "sensors", "improved"],
+  "tags": ["bme680", "environment", "sensors", "calibration"],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "VictoriaMetrics",
-          "value": "VictoriaMetrics"
+          "text": "victoriametrics-metrics-datasource",
+          "value": "beqy5k13np3b4b"
         },
         "includeAll": false,
         "label": "Datasource",
@@ -861,5 +1141,5 @@
   "timezone": "browser",
   "title": "📊 BME680 Improved Dashboard",
   "uid": "bme680-improved",
-  "version": 4
+  "version": 13
 }
