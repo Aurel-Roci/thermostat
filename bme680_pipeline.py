@@ -32,6 +32,10 @@ def setup_argument_parser():
                        help='Mark current calibration as complete')
     parser.add_argument('--show-calibration-status', action='store_true',
                        help='Show current calibration status and exit')
+    parser.add_argument('--lock-baseline', action='store_true',
+                       help='Lock current baseline to prevent future updates')
+    parser.add_argument('--unlock-baseline', action='store_true',
+                       help='Unlock baseline to allow rolling window updates')
     parser.add_argument('--debug', action='store_true',
                        help='Enable debug logging')
     return parser
@@ -44,7 +48,6 @@ def main():
     parser = setup_argument_parser()
     args = parser.parse_args()
 
-    # Set debug logging if requested
     if args.debug:
         logging.getLogger().setLevel(logging.DEBUG)
         logger.info("🐛 Debug logging enabled")
@@ -55,14 +58,11 @@ def main():
     logger.info(f"⏱️ Read Interval: {READ_INTERVAL}s")
 
     try:
-        # Initialize database client
         db = VictoriaMetricsClient(host=VM_HOST, port=VM_PORT)
 
-        # Check database connectivity
         if not db.health_check():
             logger.warning("⚠️ VictoriaMetrics health check failed, but continuing...")
 
-        # Initialize BME680 sensor
         sensor = BME680Sensor(db=db, device_id=DEVICE_ID)
 
         # Handle calibration management commands
@@ -87,7 +87,23 @@ def main():
             sensor.log_calibration_diagnostics()
             return
 
-        # Show initial calibration status
+        if args.lock_baseline:
+            logger.info("🔒 Locking baseline to current value...")
+            success = sensor.lock_baseline()
+            if success:
+                status = sensor.get_baseline_lock_status()
+                logger.info(f"✅ Baseline locked at {status['baseline_value']:.0f}Ω")
+                logger.info("💡 Baseline will no longer update - perfect for reference air quality monitoring!")
+            else:
+                logger.warning("⚠️ Could not lock baseline - ensure calibration is complete first")
+            return
+
+        if args.unlock_baseline:
+            logger.info("🔓 Unlocking baseline for rolling window updates...")
+            sensor.unlock_baseline()
+            logger.info("✅ Baseline unlocked - will resume updating with new readings")
+            return
+
         status = sensor.get_calibration_status()
         if status['calibration_complete']:
             logger.info(f"✅ Using established baseline: {status['baseline_value']:.0f}Ω")
@@ -96,15 +112,13 @@ def main():
             logger.info(f"🔧 Calibration in progress: {status['readings_count']}/100 readings")
             logger.info("💡 Tip: Place sensor in clean air for best baseline establishment")
 
-            # Show some guidance for calibration
             if status['readings_count'] == 0:
                 logger.info("🏁 Starting fresh calibration - let it run for 24-72 hours")
-            elif status['readings_count'] < 50:
+            elif status['readings_count'] < 20:
                 logger.info("⏳ Early calibration phase - baseline still learning")
             else:
                 logger.info("🎯 Late calibration phase - baseline should stabilize soon")
 
-        # Start continuous data collection
         logger.info("🎬 Starting continuous sensor monitoring...")
         sensor.get_data(interval=READ_INTERVAL)
 

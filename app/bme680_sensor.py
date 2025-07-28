@@ -206,7 +206,7 @@ class BME680Sensor:
 
         logger.info("📋 Air Quality Calibration Diagnostics:")
         logger.info(f"  Status: {'Complete' if baseline_info.get('calibration_complete') else 'In Progress'}")
-        logger.info(f"  Readings: {baseline_info.get('readings_count', 0)}/100")
+        logger.info(f"  Readings: {baseline_info.get('readings_count', 0)}/{self.air_quality.min_readings_for_baseline}")
         logger.info(f"  Baseline: {baseline_info.get('baseline_value', 'Not set')}")
         logger.info(f"  Stability: {baseline_info.get('stability', 'Unknown')}")
 
@@ -216,3 +216,27 @@ class BME680Sensor:
             logger.info(f"  Mean: {stats.get('mean', 0):.0f}Ω")
             logger.info(f"  Std Dev: {stats.get('std_dev', 0):.0f}Ω")
             logger.info(f"  Variability: {stats.get('coefficient_of_variation', 0):.1f}%")
+
+    def lock_baseline(self):
+        """Lock the current baseline to prevent future updates"""
+        logger.info("🔒 Locking baseline to current value")
+        success = self.air_quality.lock_baseline()
+        if success:
+            baseline_info = self.air_quality.get_baseline_info()
+            logger.info(f"✅ Baseline locked at {baseline_info['baseline_value']:.0f}Ω")
+        return success
+
+    def unlock_baseline(self):
+        """Unlock the baseline to allow updates again"""
+        logger.info("🔓 Unlocking baseline for updates")
+        self.air_quality.unlock_baseline()
+
+    def get_baseline_lock_status(self) -> Dict:
+        """Get baseline lock status"""
+        baseline_info = self.air_quality.get_baseline_info()
+        return {
+            "is_locked": baseline_info.get('fixed_baseline_mode', False),
+            "locked_timestamp": baseline_info.get('fixed_baseline_timestamp'),
+            "baseline_value": baseline_info.get('baseline_value'),
+            "stability": baseline_info.get('stability')
+    }
