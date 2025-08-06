@@ -71,21 +71,21 @@ int py_bsec_init() {
   // If LP fails, try SCAN mode (18s intervals)
   printf("LP failed, trying SCAN mode\n");
   requested_virtual_sensors[0].sample_rate =
-      BSEC_SAMPLE_RATE_SCAN; // ~18 seconds
+      BSEC_SAMPLE_RATE_SCAN;
   requested_virtual_sensors[1].sample_rate =
-      BSEC_SAMPLE_RATE_SCAN; // ~18 seconds
+      BSEC_SAMPLE_RATE_SCAN;
   requested_virtual_sensors[2].sample_rate =
-      BSEC_SAMPLE_RATE_SCAN; // ~18 seconds
+      BSEC_SAMPLE_RATE_SCAN;
   requested_virtual_sensors[3].sample_rate =
-      BSEC_SAMPLE_RATE_SCAN; // ~18 seconds
+      BSEC_SAMPLE_RATE_SCAN;
   requested_virtual_sensors[4].sample_rate =
-      BSEC_SAMPLE_RATE_SCAN; // ~18 seconds
+      BSEC_SAMPLE_RATE_SCAN;
   requested_virtual_sensors[5].sample_rate =
-      BSEC_SAMPLE_RATE_SCAN; // ~18 seconds
+      BSEC_SAMPLE_RATE_SCAN;
   requested_virtual_sensors[6].sample_rate =
-      BSEC_SAMPLE_RATE_SCAN; // ~18 seconds
+      BSEC_SAMPLE_RATE_SCAN;
   requested_virtual_sensors[7].sample_rate =
-      BSEC_SAMPLE_RATE_SCAN; // ~18 seconds
+      BSEC_SAMPLE_RATE_SCAN;
 
   bsec_status = bsec_update_subscription(
       requested_virtual_sensors, n_requested_virtual_sensors,
@@ -98,16 +98,16 @@ int py_bsec_init() {
     return 0;
   }
 
-  // Fall back to ULP if needed
+  // Fall back to ULP if needed (5 minutes intervals)
   printf("SCAN failed, falling back to ULP\n");
-  requested_virtual_sensors[0].sample_rate = BSEC_SAMPLE_RATE_ULP; // 5 minutes
-  requested_virtual_sensors[1].sample_rate = BSEC_SAMPLE_RATE_ULP; // 5 minutes
-  requested_virtual_sensors[2].sample_rate = BSEC_SAMPLE_RATE_ULP; // 5 minutes
-  requested_virtual_sensors[3].sample_rate = BSEC_SAMPLE_RATE_ULP; // 5 minutes
-  requested_virtual_sensors[4].sample_rate = BSEC_SAMPLE_RATE_ULP; // 5 minutes
-  requested_virtual_sensors[5].sample_rate = BSEC_SAMPLE_RATE_ULP; // 5 minutes
-  requested_virtual_sensors[6].sample_rate = BSEC_SAMPLE_RATE_ULP; // 5 minutes
-  requested_virtual_sensors[7].sample_rate = BSEC_SAMPLE_RATE_ULP; // 5 minutes
+  requested_virtual_sensors[0].sample_rate = BSEC_SAMPLE_RATE_ULP;
+  requested_virtual_sensors[1].sample_rate = BSEC_SAMPLE_RATE_ULP;
+  requested_virtual_sensors[2].sample_rate = BSEC_SAMPLE_RATE_ULP;
+  requested_virtual_sensors[3].sample_rate = BSEC_SAMPLE_RATE_ULP;
+  requested_virtual_sensors[4].sample_rate = BSEC_SAMPLE_RATE_ULP;
+  requested_virtual_sensors[5].sample_rate = BSEC_SAMPLE_RATE_ULP;
+  requested_virtual_sensors[6].sample_rate = BSEC_SAMPLE_RATE_ULP;
+  requested_virtual_sensors[7].sample_rate = BSEC_SAMPLE_RATE_ULP;
   bsec_status = bsec_update_subscription(
       requested_virtual_sensors, n_requested_virtual_sensors,
       required_sensor_settings, &n_required_sensor_settings);
