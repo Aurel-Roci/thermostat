@@ -10,7 +10,8 @@ adafruit-circuitpython-requests==4.1.13
 adafruit-circuitpython-typing==1.12.1
 Adafruit-PlatformDetect==3.81.0
 Adafruit-PureIO==1.1.11
-
+bme680==2.0.0
+smbus2==0.5.0
 
 RPi.GPIO==0.7.1
 # HTTP requests for VictoriaMetrics

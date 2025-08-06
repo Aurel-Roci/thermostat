@@ -273,11 +273,23 @@
           "mappings": [
             {
               "options": {
-                "from": 80,
+                "from": 0,
                 "result": {
                   "color": "dark-green",
                   "index": 0,
                   "text": "Excellent"
+                },
+                "to": 50
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 51,
+                "result": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "Good"
                 },
                 "to": 100
               },
@@ -285,76 +297,96 @@
             },
             {
               "options": {
-                "from": 65,
-                "result": {
-                  "color": "green",
-                  "index": 1,
-                  "text": "Good"
-                },
-                "to": 79
-              },
-              "type": "range"
-            },
-            {
-              "options": {
-                "from": 45,
+                "from": 101,
                 "result": {
                   "color": "yellow",
                   "index": 2,
-                  "text": "Moderate"
+                  "text": "Lightly Polluted"
                 },
-                "to": 64
+                "to": 150
               },
               "type": "range"
             },
             {
               "options": {
-                "from": 25,
+                "from": 151,
                 "result": {
                   "color": "orange",
                   "index": 3,
-                  "text": "Poor"
+                  "text": "Moderately Polluted"
                 },
-                "to": 44
+                "to": 200
               },
               "type": "range"
             },
             {
               "options": {
-                "from": 0,
+                "from": 201,
                 "result": {
                   "color": "red",
                   "index": 4,
-                  "text": "Very Poor"
+                  "text": "Heavily Polluted"
                 },
-                "to": 24
+                "to": 250
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 251,
+                "result": {
+                  "color": "dark-red",
+                  "index": 5,
+                  "text": "Severely Polluted"
+                },
+                "to": 350
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 351,
+                "result": {
+                  "color": "purple",
+                  "index": 6,
+                  "text": "Extremely Polluted"
+                },
+                "to": 500
               },
               "type": "range"
             }
           ],
-          "max": 100,
+          "max": 500,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
-              },
-              {
-                "color": "orange",
-                "value": 25
-              },
-              {
-                "color": "yellow",
-                "value": 45
+                "color": "dark-green"
               },
               {
                 "color": "green",
-                "value": 65
+                "value": 51
               },
               {
-                "color": "dark-green",
-                "value": 80
+                "color": "yellow",
+                "value": 101
+              },
+              {
+                "color": "orange",
+                "value": 151
+              },
+              {
+                "color": "red",
+                "value": 201
+              },
+              {
+                "color": "dark-red",
+                "value": 251
+              },
+              {
+                "color": "purple",
+                "value": 351
               }
             ]
           },
@@ -389,13 +421,364 @@
             "type": "victoriametrics-metrics-datasource",
             "uid": "$DS_VICTORIAMETRICS"
           },
-          "expr": "air_quality_score{device=\"pi4_bme680\"}",
+          "expr": "iaq{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}",
           "interval": "",
-          "legendFormat": "AQ Score",
+          "legendFormat": "IAQ",
           "refId": "A"
         }
       ],
-      "title": "🌬️ Air Quality Score",
+      "title": "🧠 BSEC Air Quality (IAQ)",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "$DS_VICTORIAMETRICS"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 2000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green"
+              },
+              {
+                "color": "green",
+                "value": 401
+              },
+              {
+                "color": "yellow",
+                "value": 601
+              },
+              {
+                "color": "orange",
+                "value": 801
+              },
+              {
+                "color": "red",
+                "value": 1001
+              },
+              {
+                "color": "dark-red",
+                "value": 1501
+              }
+            ]
+          },
+          "unit": "ppm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 7
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "co2_equivalent{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}",
+          "interval": "",
+          "legendFormat": "CO₂ {{value}} ppm",
+          "refId": "A"
+        }
+      ],
+      "title": "🫁 CO₂ Equivalent",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "$DS_VICTORIAMETRICS"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "dark-green",
+                  "index": 0,
+                  "text": "Excellent"
+                },
+                "to": 0.3
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 0.31,
+                "result": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "Good"
+                },
+                "to": 0.5
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 0.51,
+                "result": {
+                  "color": "yellow",
+                  "index": 2,
+                  "text": "Lightly Polluted"
+                },
+                "to": 1
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 1.01,
+                "result": {
+                  "color": "orange",
+                  "index": 3,
+                  "text": "Moderately Polluted"
+                },
+                "to": 2
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 2.01,
+                "result": {
+                  "color": "red",
+                  "index": 4,
+                  "text": "Heavily Polluted"
+                },
+                "to": 5
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 5.01,
+                "result": {
+                  "color": "dark-red",
+                  "index": 5,
+                  "text": "Severely Polluted"
+                },
+                "to": 10
+              },
+              "type": "range"
+            }
+          ],
+          "max": 5,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green"
+              },
+              {
+                "color": "green",
+                "value": 0.31
+              },
+              {
+                "color": "yellow",
+                "value": 0.51
+              },
+              {
+                "color": "orange",
+                "value": 1.01
+              },
+              {
+                "color": "red",
+                "value": 2.01
+              },
+              {
+                "color": "dark-red",
+                "value": 5.01
+              }
+            ]
+          },
+          "unit": "ppm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 7
+      },
+      "id": 11,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "breath_voc_equivalent{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}",
+          "interval": "",
+          "legendFormat": "VOC Equivalent",
+          "refId": "A"
+        }
+      ],
+      "title": "🌬️ VOC Equivalent",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "$DS_VICTORIAMETRICS"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "🔧 Unreliable"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "1": {
+                  "color": "orange",
+                  "index": 1,
+                  "text": "⚡ Low Accuracy"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "2": {
+                  "color": "yellow",
+                  "index": 2,
+                  "text": "📊 Medium Accuracy"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "3": {
+                  "color": "green",
+                  "index": 3,
+                  "text": "✅ High Accuracy"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 3,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "yellow",
+                "value": 2
+              },
+              {
+                "color": "green",
+                "value": 3
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 7
+      },
+      "id": 12,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "iaq_accuracy{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}",
+          "interval": "",
+          "legendFormat": "BSEC Accuracy",
+          "refId": "A"
+        }
+      ],
+      "title": "🎯 BSEC Accuracy Level",
       "type": "gauge"
     },
     {
@@ -509,7 +892,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 14
       },
       "id": 5,
       "options": {
@@ -549,6 +932,518 @@
         }
       ],
       "title": "📈 Temperature & Humidity Trends",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "$DS_VICTORIAMETRICS"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 3,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent"
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 101
+              },
+              {
+                "color": "orange",
+                "value": 151
+              },
+              {
+                "color": "red",
+                "value": 201
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last 2 Hours Avg"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 25
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last 6 Hours Avg"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [5, 5],
+                  "fill": "dash"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Today's Average"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 4
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [10, 10],
+                  "fill": "dash"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Real-time IAQ"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 5
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "min", "max", "lastNotNull"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "iaq{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}",
+          "interval": "",
+          "legendFormat": "Real-time IAQ",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "avg_over_time(iaq{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}[2h])",
+          "interval": "5m",
+          "legendFormat": "Last 2 Hours Avg",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "avg_over_time(iaq{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}[6h])",
+          "interval": "15m",
+          "legendFormat": "Last 6 Hours Avg",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "avg_over_time(iaq{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}[1d])",
+          "interval": "1h",
+          "legendFormat": "Today's Average",
+          "refId": "D"
+        }
+      ],
+      "title": "⏰ Hourly & Daily Air Quality Trends (Actionable Insights)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "$DS_VICTORIAMETRICS"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "id": 13,
+      "options": {
+        "calculate": false,
+        "cellGap": 2,
+        "cellValues": {
+          "decimals": 0
+        },
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "max": 300,
+          "min": 0,
+          "mode": "spectrum",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "RdYlGn",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "tooltip": {
+          "mode": "single",
+          "showColorScale": false,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false,
+          "unit": "short"
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "iaq{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}",
+          "interval": "5m",
+          "legendFormat": "IAQ Heatmap",
+          "refId": "A"
+        }
+      ],
+      "title": "🌡️ Air Quality Heatmap (24H Pattern)",
+      "type": "heatmap"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-metrics-datasource",
+        "uid": "$DS_VICTORIAMETRICS"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IAQ"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "IAQ Level"
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 300
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CO₂ (scaled)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "CO₂ (ppm ÷ 10)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VOC × 100"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "VOC (ppm × 100)"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 43
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": ["mean", "max", "min"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "iaq{device=\"pi4_bme680\", sensor=\"bme680_bsec\"}",
+          "interval": "",
+          "legendFormat": "IAQ",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "co2_equivalent{device=\"pi4_bme680\", sensor=\"bme680_bsec\"} / 10",
+          "interval": "",
+          "legendFormat": "CO₂ (scaled)",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "victoriametrics-metrics-datasource",
+            "uid": "$DS_VICTORIAMETRICS"
+          },
+          "expr": "breath_voc_equivalent{device=\"pi4_bme680\", sensor=\"bme680_bsec\"} * 100",
+          "interval": "",
+          "legendFormat": "VOC × 100",
+          "refId": "C"
+        }
+      ],
+      "title": "📊 Air Quality Correlations (How factors relate)",
       "type": "timeseries"
     },
     {
@@ -631,8 +1526,8 @@
       "gridPos": {
         "h": 9,
         "w": 12,
-        "x": 0,
-        "y": 16
+        "x": 12,
+        "y": 43
       },
       "id": 6,
       "options": {
@@ -662,518 +1557,6 @@
         }
       ],
       "title": "📊 Pressure Trends",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "victoriametrics-metrics-datasource",
-        "uid": "$DS_VICTORIAMETRICS"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "vis": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 3,
-            "pointSize": 6,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "line+area"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "transparent"
-              },
-              {
-                "color": "red",
-                "value": 25
-              },
-              {
-                "color": "orange",
-                "value": 45
-              },
-              {
-                "color": "yellow",
-                "value": 65
-              },
-              {
-                "color": "green",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AQ Score"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "max",
-                "value": 100
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "% of Baseline"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 16
-      },
-      "id": 7,
-      "options": {
-        "legend": {
-          "calcs": ["lastNotNull", "mean"],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "pluginVersion": "12.0.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "victoriametrics-metrics-datasource",
-            "uid": "$DS_VICTORIAMETRICS"
-          },
-          "expr": "air_quality_score{device=\"pi4_bme680\"}",
-          "interval": "",
-          "legendFormat": "AQ Score",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "victoriametrics-metrics-datasource",
-            "uid": "$DS_VICTORIAMETRICS"
-          },
-          "expr": "air_quality_percentage{device=\"pi4_bme680\"}",
-          "interval": "",
-          "legendFormat": "% of Baseline",
-          "refId": "B"
-        }
-      ],
-      "title": "🌿 Air Quality Analysis",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "victoriametrics-metrics-datasource",
-        "uid": "$DS_VICTORIAMETRICS"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "from": 1,
-                "result": {
-                  "color": "red",
-                  "index": 0,
-                  "text": "🔧 Calibrating"
-                },
-                "to": 99
-              },
-              "type": "range"
-            },
-            {
-              "options": {
-                "100": {
-                  "color": "green",
-                  "index": 1,
-                  "text": "✅ Complete"
-                }
-              },
-              "type": "value"
-            },
-            {
-              "options": {
-                "null": {
-                  "color": "orange",
-                  "index": 2,
-                  "text": "⏳ Starting"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "orange"
-              },
-              {
-                "color": "red",
-                "value": 1
-              },
-              {
-                "color": "green",
-                "value": 100
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Baseline (Ω)"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "ohm"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              },
-              {
-                "id": "mappings",
-                "value": []
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Std Dev (Ω)"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "ohm"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              },
-              {
-                "id": "mappings",
-                "value": []
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "purple"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 9,
-        "x": 0,
-        "y": 25
-      },
-      "id": 8,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": ["sum"],
-          "show": false
-        },
-        "frameIndex": 0,
-        "showHeader": true
-      },
-      "pluginVersion": "12.0.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "victoriametrics-metrics-datasource",
-            "uid": "$DS_VICTORIAMETRICS"
-          },
-          "expr": "100 * clamp_max(baseline_value{device=\"pi4_bme680\"} > 0, 1)",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Calibration Status",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "victoriametrics-metrics-datasource",
-            "uid": "$DS_VICTORIAMETRICS"
-          },
-          "expr": "baseline_value{device=\"pi4_bme680\"}",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Baseline (Ω)",
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "victoriametrics-metrics-datasource",
-            "uid": "$DS_VICTORIAMETRICS"
-          },
-          "expr": "baseline_std{device=\"pi4_bme680\"}",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "Std Dev (Ω)",
-          "refId": "C"
-        }
-      ],
-      "title": "🎯 Calibration Status",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "reducers": ["lastNotNull"]
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "victoriametrics-metrics-datasource",
-        "uid": "$DS_VICTORIAMETRICS"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "vis": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ohm"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Gas Resistance"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Baseline"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.drawStyle",
-                "value": "line"
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "dash": [10, 10],
-                  "fill": "dash"
-                }
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 3
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 31
-      },
-      "id": 9,
-      "options": {
-        "legend": {
-          "calcs": ["lastNotNull", "min", "max", "mean"],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.0.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "victoriametrics-metrics-datasource",
-            "uid": "$DS_VICTORIAMETRICS"
-          },
-          "expr": "gas_resistance{device=\"pi4_bme680\"}",
-          "interval": "",
-          "legendFormat": "Gas Resistance",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "victoriametrics-metrics-datasource",
-            "uid": "$DS_VICTORIAMETRICS"
-          },
-          "expr": "baseline_value{device=\"pi4_bme680\"}",
-          "interval": "",
-          "legendFormat": "Baseline",
-          "refId": "B"
-        }
-      ],
-      "title": "🔬 Gas Resistance vs Baseline",
       "type": "timeseries"
     }
   ],
@@ -1207,5 +1590,5 @@
   "timezone": "browser",
   "title": "📊 BME680 Improved Dashboard",
   "uid": "bme680-improved",
-  "version": 13
+  "version": 34
 }
