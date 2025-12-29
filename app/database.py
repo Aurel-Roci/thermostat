@@ -1,7 +1,8 @@
-import requests
 import logging
 from datetime import datetime
 from typing import Dict, Optional
+
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -9,13 +10,15 @@ logger = logging.getLogger(__name__)
 class VictoriaMetricsClient:
     """Client for sending metrics to VictoriaMetrics"""
 
-    def __init__(self, host: str = 'localhost', port: str = '8428'):
+    def __init__(self, host: str = "localhost", port: str = "8428"):
         self.host = host
         self.port = port
-        self.url = f"http://{host}:{port}/api/v1/import/prometheus"
+        self.url = f"http://{host}:{port}/victoria-metrics/api/v1/import/prometheus"
         logger.info(f"VictoriaMetrics client initialized: {self.url}")
 
-    def write_metrics(self, metrics_data: Dict[str, float], tags: Dict[str, str]) -> bool:
+    def write_metrics(
+        self, metrics_data: Dict[str, float], tags: Dict[str, str]
+    ) -> bool:
         """
         Write metrics to VictoriaMetrics
 
@@ -33,35 +36,39 @@ class VictoriaMetricsClient:
         timestamp = int(datetime.now().timestamp() * 1000)  # milliseconds
 
         # Build tag string
-        tag_string = ','.join([f'{k}="{v}"' for k, v in tags.items()])
+        tag_string = ",".join([f'{k}="{v}"' for k, v in tags.items()])
 
         # Create Prometheus format metrics
         metrics_lines = []
         for metric_name, value in metrics_data.items():
             if value is not None:  # Skip None values
-                metric_line = f'{metric_name}{{{tag_string}}} {value} {timestamp}'
+                metric_line = f"{metric_name}{{{tag_string}}} {value} {timestamp}"
                 metrics_lines.append(metric_line)
 
         if not metrics_lines:
             logger.warning("No valid metrics to send")
             return False
 
-        metrics_payload = '\n'.join(metrics_lines)
+        metrics_payload = "\n".join(metrics_lines)
 
         try:
             response = requests.post(
                 self.url,
                 data=metrics_payload,
-                headers={'Content-Type': 'text/plain'},
-                timeout=10
+                headers={"Content-Type": "text/plain"},
+                timeout=10,
             )
 
             if response.status_code == 204:
-                logger.info(f"✅ Metrics sent successfully: {len(metrics_lines)} metrics")
+                logger.info(
+                    f"✅ Metrics sent successfully: {len(metrics_lines)} metrics"
+                )
                 logger.debug(f"Metrics: {list(metrics_data.keys())}")
                 return True
             else:
-                logger.error(f"❌ VictoriaMetrics error: {response.status_code} - {response.text}")
+                logger.error(
+                    f"❌ VictoriaMetrics error: {response.status_code} - {response.text}"
+                )
                 return False
 
         except requests.exceptions.RequestException as e:
@@ -80,10 +87,7 @@ class VictoriaMetricsClient:
         Returns:
             bool: True if successful, False otherwise
         """
-        tags = {
-            'device': device_id,
-            'sensor': sensor_type
-        }
+        tags = {"device": device_id, "sensor": sensor_type}
 
         return self.write_metrics(readings, tags)
 

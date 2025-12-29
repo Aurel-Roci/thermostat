@@ -1,9 +1,11 @@
-import requests
 import time
 from datetime import datetime
 
+import requests
+
+
 def send_to_victoria_metrics(temperature, humidity, pressure, gas):
-    vm_url = f"http://{VM_HOST}:{VM_PORT}/api/v1/import/prometheus"
+    vm_url = f"http://{VM_HOST}:{VM_PORT}/victoria-metrics/api/v1/import/prometheus"
 
     timestamp = int(datetime.now().timestamp() * 1000)  # milliseconds
 
